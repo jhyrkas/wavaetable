@@ -102,7 +102,7 @@ if __name__ == '__main__' :
     optimizer = torch.optim.Adam(vae.parameters()) # use default learning rate and other params
     num_epochs = 20
     batch_size = 10
-    beta = 0.0000 # beta-vae
+    beta = 0.001 # beta-vae
     beta_update = beta / 10
     bbeta = beta_update
 
