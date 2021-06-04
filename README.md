@@ -19,7 +19,11 @@ To use the Max controller, first run the script
 
 >> python generate_wavetables_for_max.py
 
-Then, open nn_osc_controller.maxpat in Max. Use the number boxes to assign wavetables (0-9) to a given voice (1-5), or all voices (0). Use a MIDI controller to send MIDI notes to the patch, and you can use MIDI CC Controls 1 and 2 to change the frequency modulation ratio and index of the playback.
+Then, open nn_osc_controller.maxpat in Max and use a MIDI controller to send MIDI notes to the patch.
+You can use the number boxes to assign wavetables (0-9) to a given voice (1-5), or all voices (0). 
+You can also use MIDI CC Controls 1-5 to assign wavetables to voices 1-5 respectively, CC 6 to assign one wavetable to all voices, 
+and CC 7 and 8 to change the frequency modulation ratio and index of the playback.
+
 
 ### SuperCollider
 
