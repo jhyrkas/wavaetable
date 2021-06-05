@@ -1,4 +1,4 @@
-# thais example largely guided by 
+# this example largely guided by 
 #       https://vxlabs.com/2017/12/08/variational-autoencoder-in-pytorch-commented-and-annotated/
 #       and
 #       https://github.com/timbmg/VAE-CVAE-MNIST
@@ -11,7 +11,6 @@ from torch import nn, optim
 from torch.autograd import Variable
 from torch.nn import functional as F
 
-# first shot at a CVAE
 class vae_stft(nn.Module):
 
     # constructor
@@ -23,10 +22,8 @@ class vae_stft(nn.Module):
         # INPUT: 1025 FFT bins (positive frequencies fo 2048 bins)
         self.encoding_layers = nn.Sequential(
             nn.Linear(1025, 256),
-            #nn.BatchNorm1d(256),
             nn.ReLU(),
             nn.Linear(256, 64, bias=False),
-            #nn.BatchNorm1d(64),
             nn.ReLU(),
         )
 
@@ -38,10 +35,8 @@ class vae_stft(nn.Module):
         # INPUT: latent space + f0
         self.decoder = nn.Sequential(
             nn.Linear(16, 64),
-            #nn.BatchNorm1d(64),
             nn.ReLU(),
             nn.Linear(64, 256),
-            #nn.BatchNorm1d(256),
             nn.ReLU(),
             nn.Linear(256, 1025, bias=False),
             nn.ReLU() # necessary? we do want only >= 0 outputs though
@@ -72,12 +67,9 @@ class vae_stft(nn.Module):
 
 # VAE loss function
 def loss_function(x, x_hat, mu, logvar, beta) :
-    #mse = F.mse_loss(x, x_hat)
-    #kld = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    #return (mse + beta*kld) / x.size(0)
     numerator = torch.sum((x - x_hat).pow(2))
     denominator = torch.sum(x.pow(2))
-    sc = torch.sqrt(numerator / denominator)
+    sc = torch.sqrt(numerator / denominator) # spectral convergence
     kld = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
     return (sc + beta*kld) / x.size(0)
 
@@ -86,13 +78,14 @@ if __name__ == '__main__' :
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # load data
-    # i should probably normalize the data....
     timbre_data = np.load('data/timbre_data.npy').T
     print(timbre_data.shape)
+    # for some reason there are some totally empty rows
     good_rows = np.max(timbre_data, axis=1) > 0
     print(good_rows.shape)
     timbre_data = timbre_data[good_rows,:]
     print(timbre_data.shape)
+    # normalize
     timbre_data = timbre_data / np.max(timbre_data, axis=1).reshape(timbre_data.shape[0], 1)
     timbre_data = torch.from_numpy(timbre_data).float()
     pitch_data = np.load('data/pitch_data.npy') # this will actually be used later, so we don't really need it here
@@ -112,7 +105,6 @@ if __name__ == '__main__' :
             X = timbre_data[i*batch_size:(i+1)*batch_size, :]
             x, x_hat, mu, logvar = vae(X)
             loss = loss_function(x, x_hat, mu, logvar, bbeta) # phasing in beta
-            #loss = loss_function(x, x_hat, mu, logvar, beta)
             losses.append(loss.detach().numpy())
             optimizer.zero_grad()
             loss.backward()
