@@ -1,5 +1,5 @@
 # wavaetable
-Contains Python, Max and SuperCollider code for WaVAEtable Synthesis method
+This repo contains Python, Max and SuperCollider code for the WaVAEtable Synthesis method.
 
 ## Dependencies
 
