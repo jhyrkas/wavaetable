@@ -33,7 +33,7 @@ Boot SuperCollider and run the first portion of the script nn_osc_controller.scd
 
 Use the GUI to control the latent parameters, listen to the wavetable (audio will be played from the Python script) and store the wavetable if you would like to. You can use Osc and VOsc UGens in SuperCollider to play the wavetables.
 
-If you would like, after storing 5 wavetables of interest, run the SynthDef command in nn_osc_controller.scd and then run the etude so hear a mini composition using wavetable modulation and interpolation.
+If you would like, after storing 5 wavetables of interest, run the SynthDef command in nn_osc_controller.scd and then run the etude so hear a mini composition using wavetable modulation and interpolation. One example recording of the etude is provided, although your version will sound different based on the model/wavetable you choose, as well as the random numbers generated in the script.
 
 ### Training the Python Model
 
