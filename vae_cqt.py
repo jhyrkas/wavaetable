@@ -1,4 +1,4 @@
-# thais example largely guided by 
+# this example largely guided by 
 #       https://vxlabs.com/2017/12/08/variational-autoencoder-in-pytorch-commented-and-annotated/
 #       and
 #       https://github.com/timbmg/VAE-CVAE-MNIST
@@ -11,7 +11,6 @@ from torch import nn, optim
 from torch.autograd import Variable
 from torch.nn import functional as F
 
-# first shot at a CVAE
 class vae_cqt(nn.Module):
 
     # constructor
@@ -26,8 +25,6 @@ class vae_cqt(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 64, bias=False),
             nn.ReLU(),
-            #nn.Linear(128, 64, bias=False),
-            #nn.ReLU()
         )
 
         self.mu_encoding = nn.Linear(64, 16, bias=False)  # mu layer
@@ -70,9 +67,6 @@ class vae_cqt(nn.Module):
 
 # VAE loss function
 def loss_function(x, x_hat, mu, logvar, beta) :
-    #mse = F.mse_loss(x, x_hat)
-    #kld = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    #return (mse + beta*kld) / x.size(0)
     numerator = torch.sum((x - x_hat).pow(2))
     denominator = torch.sum(x.pow(2))
     sc = torch.sqrt(numerator / denominator)
@@ -84,7 +78,6 @@ if __name__ == '__main__' :
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # load data
-    # i should probably normalize the data....
     timbre_data = np.load('data/timbre_data_cqt.npy').T
     timbre_data = timbre_data / np.max(timbre_data, axis=1).reshape(timbre_data.shape[0], 1)
     timbre_data = torch.from_numpy(timbre_data).float()

@@ -25,8 +25,6 @@ if __name__ == '__main__' :
     while i < 10 :
         z = np.random.normal(size=z_size)
         X_hat = vae.decode(torch.from_numpy(z).float()).detach()
-        #X_hat = vae.decode(mu, f0)
-        #print(X_hat)
 
         x_hat = librosa.griffinlim(np.repeat(X_hat.numpy().reshape(data_size,1), n_reps, axis=1))
 
@@ -34,7 +32,6 @@ if __name__ == '__main__' :
         f0_hat_frames, voiced_hat, _ = librosa.pyin(x_hat, librosa.note_to_hz('C2'), librosa.note_to_hz('C7'), sr=fs)
         f0_hat = np.mean(f0_hat_frames[voiced_hat]) if np.sum(voiced_hat) > 10 else 0 # at least 10 voiced frames?
         print(str(f0_hat))
-        #print(z)
         if f0_hat == 0 :
             continue
         cycle_samps = 512 # for max's cycle object
@@ -55,8 +52,3 @@ if __name__ == '__main__' :
         else :
             # that's an error
             print(new_x_hat[0:cycle_samps])
-        
-        #sd.play(x, fs)
-        #sd.wait()
-        #sd.play(x_hat, fs)
-        #sd.wait()

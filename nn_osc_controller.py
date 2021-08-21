@@ -60,7 +60,7 @@ def update_wavetable(vae) :
         else :
             start_index += 1
     if start_index + cycle_samps <= len(new_x_hat) :
-        wt = new_x_hat[start_index:start_index+cycle_samps] # do something with this later
+        wt = new_x_hat[start_index:start_index+cycle_samps]
         return True
     else :
         print('ERROR IN WAVETABLE GENERATION')
